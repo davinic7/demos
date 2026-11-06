@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Candy Bar · Alquiler</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f3f1; --card:#ffffff; --ink:#1f1a1c; --muted:#7b7176; --line:#ebe2e4;
+  --accent:#7a1f35; --accent-soft:#f6e7eb; --gold:#c9a24a; --ok:#2f7d5b; --ok-soft:#e5f3ec;
+  --warn:#b4542c; --warn-soft:#fbeae2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,sans-serif;font-size:15px;line-height:1.4;padding-bottom:110px}
+header{background:var(--ink);color:#fff;padding:18px 16px 14px;text-align:center}
+.brand{font-family:"Playfair Display",serif;font-size:24px;letter-spacing:.5px}
+.brand small{display:block;font-family:Nunito;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#d8c9cd;margin-top:2px}
+nav{display:flex;background:var(--ink);padding:0 12px 10px;gap:8px;justify-content:center}
+nav button{flex:1;max-width:180px;border:1px solid #4a4044;background:transparent;color:#d8c9cd;border-radius:999px;padding:8px 10px;font:700 13px Nunito;cursor:pointer}
+nav button.on{background:#fff;color:var(--ink);border-color:#fff}
+main{max-width:720px;margin:0 auto;padding:14px 16px}
+.panel{background:var(--card);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(60,20,30,.06)}
+h2{font-family:"Playfair Display",serif;font-size:19px;margin-bottom:12px}
+label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:4px}
+input,select{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;font:600 15px Nunito;color:var(--ink);background:#fff}
+input:focus,select:focus{outline:none;border-color:var(--accent)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid2>div{min-width:0}
+.mt{margin-top:10px}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:12px}
+.chip{flex:none;border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font:700 13px Nunito;color:var(--muted);cursor:pointer}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.items{display:grid;grid-template-columns:1fr;gap:10px}
+@media(min-width:560px){.items{grid-template-columns:1fr 1fr}}
+.item{display:flex;gap:12px;border:1.5px solid var(--line);border-radius:14px;padding:10px;align-items:center;transition:border-color .15s}
+.item.sel{border-color:var(--accent);background:#fffafb}
+.item.none{opacity:.55}
+.ico{flex:none;width:62px;height:62px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center}
+.ico svg{width:50px;height:50px}
+.info{flex:1;min-width:0}
+.info b{display:block;font-size:14px;line-height:1.25}
+.info .d{font-size:12px;color:var(--muted)}
+.info .p{font-weight:800;font-size:14px;margin-top:2px}
+.badge{display:inline-block;font-size:11px;font-weight:800;border-radius:6px;padding:1px 6px;margin-top:3px}
+.badge.ok{background:var(--ok-soft);color:var(--ok)}
+.badge.warn{background:var(--warn-soft);color:var(--warn)}
+.step{display:flex;flex-direction:column;align-items:center;gap:2px}
+.step button{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--line);background:#fff;font:800 17px Nunito;color:var(--accent);cursor:pointer;line-height:1}
+.step button:disabled{opacity:.3;cursor:default}
+.step span{font-weight:800;min-width:20px;text-align:center}
+.row{display:flex;justify-content:space-between;gap:10px;padding:6px 0;font-size:14px}
+.row.sub{color:var(--muted)}
+.row.disc{color:var(--ok);font-weight:700}
+.row.total{border-top:1.5px dashed var(--line);margin-top:6px;padding-top:10px;font-size:18px;font-weight:800}
+.row.hl{background:var(--accent-soft);border-radius:8px;padding:8px 10px;margin-top:6px;font-weight:800;color:var(--accent)}
+.check{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;margin-top:10px;cursor:pointer}
+.check input{width:20px;height:20px;accent-color:var(--accent)}
+.btn{display:block;width:100%;border:none;border-radius:12px;padding:13px;font:800 15px Nunito;cursor:pointer;margin-top:8px}
+.btn.wa{background:#25a35a;color:#fff}
+.btn.pri{background:var(--accent);color:#fff}
+.btn.ghost{background:#fff;color:var(--accent);border:1.5px solid var(--accent)}
+.promo{font-size:12px;color:var(--muted);margin-top:4px}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--ink);color:#fff;padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:5}
+.bar .t{font-size:12px;color:#d8c9cd}
+.bar .v{font-size:20px;font-weight:800}
+.bar button{background:#fff;color:var(--ink);border:none;border-radius:10px;padding:10px 14px;font:800 14px Nunito;cursor:pointer}
+.cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.cal-head button{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--line);background:#fff;font:800 16px Nunito;cursor:pointer}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.cal .dow{font-size:11px;font-weight:800;color:var(--muted);padding:4px 0}
+.cal .day{aspect-ratio:1;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;font-size:14px;cursor:pointer;border:1.5px solid transparent;position:relative}
+.cal .day.out{visibility:hidden}
+.cal .day.today{border-color:var(--ink)}
+.cal .day.busy{background:var(--accent-soft);color:var(--accent)}
+.cal .day.full{background:var(--accent);color:#fff}
+.cal .day.pick{outline:2.5px solid var(--gold);outline-offset:1px}
+.cal .dot{font-size:9px;font-weight:800;line-height:1}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--muted);margin-top:10px;flex-wrap:wrap}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:4px;vertical-align:-2px;margin-right:4px}
+.res{border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:8px}
+.res .h{display:flex;justify-content:space-between;gap:8px;font-weight:800}
+.res .m{font-size:12px;color:var(--muted);margin:2px 0 6px}
+.res ul{list-style:none;font-size:13px}
+.res li::before{content:"• ";color:var(--accent)}
+.st{font-size:11px;font-weight:800;border-radius:6px;padding:2px 7px;white-space:nowrap}
+.st.s{background:var(--ok-soft);color:var(--ok)}
+.st.p{background:var(--warn-soft);color:var(--warn)}
+.empty{color:var(--muted);font-size:14px;text-align:center;padding:14px 0}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-weight:700;font-size:14px;opacity:0;transition:.25s;z-index:9;pointer-events:none;max-width:90%;text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%)}
+.hidden{display:none}
+footer{text-align:center;font-size:11px;color:var(--muted);padding:6px 0 20px}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">Candy Bar<small>Alquiler para eventos</small></div>
+</header>
+<nav>
+  <button class="on" data-tab="cotizar">Cotizar</button>
+  <button data-tab="agenda">Agenda de reservas</button>
+</nav>
+
+<main>
+<!-- COTIZAR -->
+<section id="tab-cotizar">
+  <div class="panel">
+    <h2>Datos del evento</h2>
+    <div class="grid2">
+      <div><label>Cliente</label><input id="cliente" placeholder="Ej: Mariana" value="Mariana"></div>
+      <div><label>WhatsApp (opcional)</label><input id="tel" inputmode="tel" placeholder="383 4..."></div>
+    </div>
+    <div class="grid2 mt">
+      <div><label>Fecha del evento</label><input id="fecha" type="date"></div>
+      <div><label>Días de alquiler</label>
+        <select id="dias"><option value="1">1 día</option><option value="2">2 días (+50%)</option><option value="3">3 días (+100%)</option></select>
+      </div>
+    </div>
+    <div class="mt"><label>Tipo de evento</label>
+      <select id="tipo"><option>Cumpleaños infantil</option><option>XV años</option><option>Casamiento</option><option>Bautismo / Comunión</option><option>Baby shower</option><option>Evento empresarial</option></select>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Piezas</h2>
+    <div class="chips" id="chips"></div>
+    <div class="items" id="items"></div>
+    <button class="btn ghost" id="combo">✨ Cargar “Candy bar completo”</button>
+    <div class="promo">Promo: 8 piezas o más → 10% de descuento</div>
+  </div>
+
+  <div class="panel">
+    <h2>Entrega</h2>
+    <label>Envío</label>
+    <select id="zona">
+      <option value="0">Retira en el local</option>
+      <option value="6000">Capital</option>
+      <option value="9000">Valle Viejo / Fray M. Esquiú</option>
+      <option value="14000">Otra localidad</option>
+    </select>
+    <label class="check"><input type="checkbox" id="armado"> Armado y desarme en el salón (+$ 8.000)</label>
+  </div>
+
+  <div class="panel" id="resumen">
+    <h2>Presupuesto</h2>
+    <div id="lineas"></div>
+    <button class="btn wa" id="enviar">Enviar por WhatsApp</button>
+    <button class="btn pri" id="reservar">Guardar como reserva</button>
+  </div>
+</section>
+
+<!-- AGENDA -->
+<section id="tab-agenda" class="hidden">
+  <div class="panel">
+    <div class="cal-head"><button id="prev">‹</button><h2 id="mes" style="margin:0"></h2><button id="next">›</button></div>
+    <div class="cal" id="cal"></div>
+    <div class="legend"><span><i style="background:var(--accent-soft)"></i>Con reservas</span><span><i style="background:var(--accent)"></i>Mucho alquilado</span></div>
+  </div>
+  <div class="panel">
+    <h2 id="diaTitulo">Próximas reservas</h2>
+    <div id="diaInfo"></div>
+  </div>
+</section>
+<footer>Demo · precios de ejemplo · desarrollado por DaviNic Developer</footer>
+</main>
+
+<div class="bar" id="bar">
+  <div><div class="t" id="barT">0 piezas</div><div class="v" id="barV">$ 0</div></div>
+  <button id="verRes">Ver presupuesto</button>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const G='#c9a24a';
+const ICONS={
+ aro:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="32" cy="27" r="21"/><path d="M20 47h24M22 47l-2 10h24l-2-10" stroke="${G}"/></svg>`,
+ consola:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="17" width="50" height="5" rx="1.5"/><path d="M10 22h44v6q-22 5-44 0z"/><rect x="26" y="23" width="12" height="3.5" rx="1"/><path d="M14 28c-5 9 4 16-2 28M50 28c5 9-4 16 2 28"/></svg>`,
+ banco:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="30" width="44" height="5" rx="1.5"/><path d="M13 35h38v4q-19 4-38 0z"/><path d="M17 39c-4 6 3 10-1 17M47 39c4 6-3 10 1 17"/></svg>`,
+ mesa:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="6" y="18" width="52" height="5" rx="1.5"/><path d="M12 23v33M52 23v33M12 30l40 18M52 30L12 48"/></svg>`,
+ carrito:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10h32l5 11q-3.5 5-7 0-3.5 5-7 0-3.5 5-7 0-3.5 5-7 0-3.5 5-7 0-3.5 5-7 0z"/><path d="M18 22v14M46 22v14"/><rect x="12" y="36" width="40" height="11" rx="1.5"/><path d="M26 36v11M38 36v11"/><circle cx="20" cy="51" r="6"/><circle cx="44" cy="51" r="6"/><path d="M20 45v12M14 51h12M44 45v12M38 51h12"/></svg>`,
+ rueda:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="27" r="19"/><circle cx="32" cy="27" r="3"/><path d="M32 8v38M13 27h38M18.5 13.5l27 27M45.5 13.5l-27 27"/><path d="M20 58l12-31 12 31M16 58h32"/><rect x="28" y="4" width="8" height="6" rx="1.5"/><rect x="47" y="24" width="8" height="6" rx="1.5"/><rect x="9" y="24" width="8" height="6" rx="1.5"/></svg>`,
+ estante:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 8L14 58M42 8l8 50M22 8h20"/><path d="M19 24h26q-2 4-4.3 0-2.2 4-4.4 0-2.2 4-4.4 0-2.2 4-4.4 0-2.2 4-4.4 0-2.2 4-4.2 0"/><path d="M17 38h30q-2.5 4-5 0-2.5 4-5 0-2.5 4-5 0-2.5 4-5 0-2.5 4-5 0-2.5 4-5 0"/><path d="M15 52h34q-2.8 4-5.7 0-2.8 4-5.7 0-2.8 4-5.7 0-2.8 4-5.7 0-2.8 4-5.7 0-2.8 4-5.5 0"/></svg>`,
+ estanteAlto:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4v56M44 4v56M20 4h24M26 4q6 6 12 0"/><path d="M20 26h24M20 42h24M20 56h24"/><path d="M20 26v3h24v-3M20 42v3h24v-3"/></svg>`,
+ chupetin:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 56h48M12 46h40M16 36h32M20 26h24M24 16h16"/><path d="M24 16q-4 5 -4 10q-4 5-4 10q-4 5-4 10q-4 5-4 10M40 16q4 5 4 10q4 5 4 10q4 5 4 10q4 5 4 10"/><g fill="currentColor" stroke="none"><circle cx="28" cy="20" r="1.2"/><circle cx="32" cy="20" r="1.2"/><circle cx="36" cy="20" r="1.2"/><circle cx="24" cy="30" r="1.2"/><circle cx="32" cy="30" r="1.2"/><circle cx="40" cy="30" r="1.2"/><circle cx="20" cy="40" r="1.2"/><circle cx="28" cy="40" r="1.2"/><circle cx="36" cy="40" r="1.2"/><circle cx="44" cy="40" r="1.2"/></g></svg>`,
+ bandeja:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 22q2-5 6-3 2-5 7-3 3-4 9-4t9 4q5-2 7 3 4-2 6 3-2 5-6 3-2 5-7 3-3 4-9 4t-9-4q-5 2-7-3-4 2-6-3z"/><path d="M27 28q-5 8 0 16-4 3-4 6v6h18v-6q0-3-4-6 5-8 0-16"/><path d="M18 56h28"/></svg>`,
+ torta:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="32" cy="20" rx="22" ry="5"/><path d="M10 20v3q22 10 44 0v-3"/><path d="M29 27l-2 6 3 4-3 5 2 6h6l2-6-3-5 3-4-2-6"/><path d="M22 56l10-8 10 8M20 56h24"/></svg>`,
+ atril:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M32 6L16 58M32 6l16 52M32 40v18"/><rect x="18" y="12" width="28" height="24" rx="1.5" fill="#fff"/><path d="M22 30q10-14 20 0" stroke="#e05a7a"/><path d="M25 30q7-9 14 0" stroke="${G}"/><circle cx="40" cy="18" r="2.5" stroke="${G}"/><path d="M16 38h32"/></svg>`
+};
+
+const PIEZAS=[
+ {id:'aro',cat:'Estructuras',n:'Aro para fondo de fotos',d:'Ø 2 m, base dorada y funda blanca',p:18000,s:1,i:'aro'},
+ {id:'consolaG',cat:'Mesas',n:'Consola patas curvas grande',d:'1,20 m, con cajón',p:15000,s:1,i:'consola'},
+ {id:'consolaM',cat:'Mesas',n:'Consola patas curvas mediana',d:'0,90 m, ideal 2° nivel',p:12000,s:2,i:'consola'},
+ {id:'banco',cat:'Mesas',n:'Mesa baja de apoyo',d:'Para el nivel delantero',p:7000,s:2,i:'banco'},
+ {id:'mesaR',cat:'Mesas',n:'Mesa recta plegable',d:'1,40 m, base para fondo',p:9000,s:2,i:'mesa'},
+ {id:'carrito',cat:'Exhibidores',n:'Carrito candy con toldo',d:'Con divisiones para golosinas',p:9500,s:2,i:'carrito'},
+ {id:'rueda',cat:'Exhibidores',n:'Vuelta al mundo',d:'Porta golosinas giratorio',p:11000,s:1,i:'rueda'},
+ {id:'estante',cat:'Exhibidores',n:'Estante escalera 3 niveles',d:'Borde ondulado',p:6000,s:2,i:'estante'},
+ {id:'estanteA',cat:'Exhibidores',n:'Estante alto 3 niveles',d:'Para frascos y cajitas',p:8000,s:1,i:'estanteAlto'},
+ {id:'chupetin',cat:'Exhibidores',n:'Escalera porta chupetines',d:'Para cake pops y paletas',p:5000,s:2,i:'chupetin'},
+ {id:'bandeja',cat:'Bandejas',n:'Bandeja con pie borde flor',d:'Distintas alturas',p:2500,s:8,i:'bandeja'},
+ {id:'torta',cat:'Bandejas',n:'Porta torta clásico',d:'Para la torta principal',p:3000,s:2,i:'torta'},
+ {id:'atril',cat:'Infantil',n:'Atril infantil para pintar',d:'Con hojas y témperas',p:4000,s:6,i:'atril'}
+];
+const CATS=['Todas',...new Set(PIEZAS.map(x=>x.cat))];
+const COMBO={aro:1,consolaG:1,consolaM:1,banco:1,carrito:2,rueda:1,estante:2,bandeja:4,torta:1};
+
+const $=s=>document.querySelector(s);
+const fmt=n=>'$ '+Math.round(n).toLocaleString('es-AR');
+const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const parse=s=>{const[a,b,c]=s.split('-').map(Number);return new Date(a,b-1,c)};
+const add=(s,n)=>{const d=parse(s);d.setDate(d.getDate()+n);return iso(d)};
+const DIAS=['dom','lun','mar','mié','jue','vie','sáb'];
+const nice=s=>{const d=parse(s);return DIAS[d.getDay()]+' '+String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')};
+const hoy=iso(new Date());
+
+// Próximo sábado como fecha sugerida
+function proxSab(off){const d=new Date();d.setDate(d.getDate()+((6-d.getDay()+7)%7||7)+off);return iso(d)}
+
+let reservas;
+try{reservas=JSON.parse(localStorage.getItem('cb_res'))}catch(e){}
+if(!Array.isArray(reservas)){
+ reservas=[
+  {c:'Sofía',t:'Cumpleaños infantil',f:proxSab(0),dias:1,items:{aro:1,carrito:2,consolaG:1,bandeja:4},tot:79000,st:'s'},
+  {c:'Martín',t:'Bautismo / Comunión',f:proxSab(-1),dias:1,items:{rueda:1,atril:4,bandeja:2},tot:32000,st:'p'},
+  {c:'Agustina',t:'XV años',f:proxSab(7),dias:2,items:{aro:1,consolaG:1,consolaM:2,estanteA:1,torta:1,bandeja:6},tot:142000,st:'s'},
+  {c:'Lorena',t:'Baby shower',f:proxSab(14),dias:1,items:{consolaM:1,estante:2,chupetin:1},tot:33000,st:'p'},
+  {c:'Empresa Norte',t:'Evento empresarial',f:proxSab(28),dias:1,items:{mesaR:2,bandeja:8},tot:38000,st:'s'}
+ ];
+}
+const guardar=()=>{try{localStorage.setItem('cb_res',JSON.stringify(reservas))}catch(e){}};
+
+let sel={}, cat='Todas';
+$('#fecha').value=proxSab(0);
+
+function solapa(r,f,dias){const a1=r.f,a2=add(r.f,r.dias-1),b1=f,b2=add(f,dias-1);return !(a2<b1||b2<a1)}
+function disponibles(id){
+ const f=$('#fecha').value, dias=+$('#dias').value, p=PIEZAS.find(x=>x.id===id);
+ if(!f) return p.s;
+ let usado=0; reservas.forEach(r=>{if(r.items[id]&&solapa(r,f,dias)) usado+=r.items[id]});
+ return Math.max(0,p.s-usado);
+}
+
+function renderChips(){
+ $('#chips').innerHTML=CATS.map(c=>`<button class="chip ${c===cat?'on':''}" data-c="${c}">${c}</button>`).join('');
+}
+function renderItems(){
+ // ajustar cantidades a disponibilidad
+ PIEZAS.forEach(p=>{const d=disponibles(p.id); if((sel[p.id]||0)>d){ if(d) sel[p.id]=d; else delete sel[p.id]; }});
+ $('#items').innerHTML=PIEZAS.filter(p=>cat==='Todas'||p.cat===cat).map(p=>{
+  const d=disponibles(p.id), q=sel[p.id]||0;
+  const b=d===0?`<span class="badge warn">Reservado esa fecha</span>`:
+          d<p.s?`<span class="badge warn">Quedan ${d} de ${p.s}</span>`:
+          `<span class="badge ok">Disponible${p.s>1?'s: '+d:''}</span>`;
+  return `<div class="item ${q?'sel':''} ${d===0?'none':''}">
+   <div class="ico">${ICONS[p.i]}</div>
+   <div class="info"><b>${p.n}</b><div class="d">${p.d}</div><div class="p">${fmt(p.p)}</div>${b}</div>
+   <div class="step"><button data-a="+" data-id="${p.id}" ${q>=d?'disabled':''}>+</button><span>${q}</span><button data-a="-" data-id="${p.id}" ${q<=0?'disabled':''}>−</button></div>
+  </div>`;
+ }).join('');
+ calcular();
+}
+
+function calcular(){
+ const dias=+$('#dias').value, mult=1+0.5*(dias-1);
+ const lineas=PIEZAS.filter(p=>sel[p.id]).map(p=>({p,q:sel[p.id],t:p.p*sel[p.id]*mult}));
+ const cant=lineas.reduce((a,l)=>a+l.q,0);
+ const sub=lineas.reduce((a,l)=>a+l.t,0);
+ const desc=cant>=8?sub*0.10:0;
+ const envio=+$('#zona').value, arm=$('#armado').checked?8000:0;
+ const total=sub-desc+envio+arm, sena=Math.round(total*0.3/100)*100, garantia=Math.round((sub-desc)*0.2/100)*100;
+ window._c={lineas,cant,sub,desc,envio,arm,total,sena,garantia,dias};
+ let h='';
+ if(!lineas.length) h='<div class="empty">Elegí piezas para armar el presupuesto</div>';
+ else{
+  h+=lineas.map(l=>`<div class="row"><span>${l.q}× ${l.p.n}</span><span>${fmt(l.t)}</span></div>`).join('');
+  if(dias>1) h+=`<div class="row sub"><span>Incluye ${dias} días de alquiler</span><span></span></div>`;
+  if(desc) h+=`<div class="row disc"><span>Promo 8+ piezas (−10%)</span><span>−${fmt(desc)}</span></div>`;
+  h+=`<div class="row sub"><span>${$('#zona').selectedOptions[0].text}</span><span>${envio?fmt(envio):'—'}</span></div>`;
+  if(arm) h+=`<div class="row sub"><span>Armado y desarme</span><span>${fmt(arm)}</span></div>`;
+  h+=`<div class="row total"><span>Total</span><span>${fmt(total)}</span></div>`;
+  h+=`<div class="row hl"><span>Seña para reservar (30%)</span><span>${fmt(sena)}</span></div>`;
+  h+=`<div class="row sub"><span>Depósito en garantía (se devuelve)</span><span>${fmt(garantia)}</span></div>`;
+ }
+ $('#lineas').innerHTML=h;
+ $('#barT').textContent=cant+(cant===1?' pieza':' piezas')+(desc?' · promo aplicada':'');
+ $('#barV').textContent=fmt(total);
+}
+
+function textoWA(){
+ const c=window._c, f=$('#fecha').value;
+ let t=`*Presupuesto – Candy Bar*\n\nHola ${$('#cliente').value||''}! 😊\nEvento: ${$('#tipo').value}\nFecha: ${f?nice(f):'a definir'}${c.dias>1?' ('+c.dias+' días)':''}\n\n*Piezas:*\n`;
+ t+=c.lineas.map(l=>`• ${l.q}× ${l.p.n} – ${fmt(l.t)}`).join('\n');
+ if(c.desc) t+=`\nPromo 8+ piezas: −${fmt(c.desc)}`;
+ t+=`\n${$('#zona').selectedOptions[0].text}${c.envio?': '+fmt(c.envio):''}`;
+ if(c.arm) t+=`\nArmado y desarme: ${fmt(c.arm)}`;
+ t+=`\n\n*Total: ${fmt(c.total)}*\nSeña para reservar (30%): ${fmt(c.sena)}\nDepósito en garantía (se devuelve): ${fmt(c.garantia)}\n\nLa fecha queda reservada al abonar la seña. ¡Gracias!`;
+ return t;
+}
+
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),2200)}
+
+// eventos cotizar
+$('#chips').onclick=e=>{const c=e.target.dataset.c;if(c){cat=c;renderChips();renderItems()}};
+$('#items').onclick=e=>{const b=e.target.closest('button');if(!b)return;const id=b.dataset.id;sel[id]=(sel[id]||0)+(b.dataset.a==='+'?1:-1);if(sel[id]<=0)delete sel[id];renderItems()};
+['fecha','dias'].forEach(i=>$('#'+i).addEventListener('change',()=>{const antes=JSON.stringify(sel);renderItems();if(antes!==JSON.stringify(sel))toast('Ajusté cantidades según disponibilidad')}));
+['zona','armado'].forEach(i=>$('#'+i).addEventListener('change',calcular));
+$('#combo').onclick=()=>{sel={};let falta=0;for(const[k,v]of Object.entries(COMBO)){const d=disponibles(k);if(d){sel[k]=Math.min(v,d)} if(d<v)falta++}cat='Todas';renderChips();renderItems();toast(falta?'Combo cargado: algunas piezas no están libres esa fecha':'Combo completo cargado ✨')};
+$('#verRes').onclick=()=>{showTab('cotizar');$('#resumen').scrollIntoView({behavior:'smooth'})};
+$('#enviar').onclick=()=>{
+ if(!window._c.lineas.length) return toast('Primero elegí alguna pieza');
+ let tel=$('#tel').value.replace(/\D/g,''); if(tel&&!tel.startsWith('54')) tel='549'+tel;
+ window.open('https://wa.me/'+tel+'?text='+encodeURIComponent(textoWA()),'_blank');
+};
+$('#reservar').onclick=()=>{
+ const c=window._c,f=$('#fecha').value;
+ if(!c.lineas.length) return toast('Primero elegí alguna pieza');
+ if(!f) return toast('Falta la fecha del evento');
+ reservas.push({c:$('#cliente').value||'Sin nombre',t:$('#tipo').value,f,dias:c.dias,items:{...sel},tot:c.total,st:'p'});
+ guardar();sel={};renderItems();toast('Reserva guardada (pendiente de seña)');
+ calMes=parse(f);calMes.setDate(1);diaSel=f;showTab('agenda');
+};
+
+// agenda
+let calMes=new Date();calMes.setDate(1);let diaSel=null;
+function resDia(f){return reservas.filter(r=>solapa(r,f,1))}
+function renderCal(){
+ const y=calMes.getFullYear(),m=calMes.getMonth();
+ $('#mes').textContent=calMes.toLocaleDateString('es-AR',{month:'long',year:'numeric'}).replace(/^./,c=>c.toUpperCase());
+ const ini=(new Date(y,m,1).getDay()+6)%7, n=new Date(y,m+1,0).getDate();
+ let h=['L','M','M','J','V','S','D'].map(d=>`<div class="dow">${d}</div>`).join('');
+ for(let i=0;i<ini;i++)h+='<div class="day out"></div>';
+ for(let d=1;d<=n;d++){
+  const f=iso(new Date(y,m,d)),rs=resDia(f);
+  const piezas=rs.reduce((a,r)=>a+Object.values(r.items).reduce((x,y)=>x+y,0),0);
+  const cls=rs.length?(piezas>=10?'full':'busy'):'';
+  h+=`<div class="day ${cls} ${f===hoy?'today':''} ${f===diaSel?'pick':''}" data-f="${f}">${d}${rs.length?`<span class="dot">${rs.length} res.</span>`:''}</div>`;
+ }
+ $('#cal').innerHTML=h;
+ renderDia();
+}
+function tarjeta(r){
+ const fin=r.dias>1?' al '+nice(add(r.f,r.dias-1)):'';
+ return `<div class="res"><div class="h"><span>${r.c}</span><span class="st ${r.st}">${r.st==='s'?'Señada':'Falta seña'}</span></div>
+ <div class="m">${r.t} · ${nice(r.f)}${fin} · ${fmt(r.tot)}</div>
+ <ul>${Object.entries(r.items).map(([k,v])=>`<li>${v}× ${PIEZAS.find(p=>p.id===k).n}</li>`).join('')}</ul></div>`;
+}
+function renderDia(){
+ if(diaSel){
+  const rs=resDia(diaSel);
+  $('#diaTitulo').textContent=nice(diaSel).replace(/^./,c=>c.toUpperCase());
+  let h=rs.length?rs.map(tarjeta).join(''):'<div class="empty">Día libre: todas las piezas disponibles</div>';
+  h+=`<button class="btn ghost" id="cotizarDia">Cotizar para este día</button>`;
+  $('#diaInfo').innerHTML=h;
+  $('#cotizarDia').onclick=()=>{$('#fecha').value=diaSel;renderItems();showTab('cotizar');window.scrollTo({top:0,behavior:'smooth'})};
+ }else{
+  const prox=reservas.filter(r=>add(r.f,r.dias-1)>=hoy).sort((a,b)=>a.f<b.f?-1:1);
+  $('#diaTitulo').textContent='Próximas reservas';
+  $('#diaInfo').innerHTML=prox.length?prox.map(tarjeta).join(''):'<div class="empty">No hay reservas próximas</div>';
+ }
+}
+$('#cal').onclick=e=>{const d=e.target.closest('.day[data-f]');if(!d)return;diaSel=diaSel===d.dataset.f?null:d.dataset.f;renderCal()};
+$('#prev').onclick=()=>{calMes.setMonth(calMes.getMonth()-1);renderCal()};
+$('#next').onclick=()=>{calMes.setMonth(calMes.getMonth()+1);renderCal()};
+
+function showTab(t){
+ document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));
+ $('#tab-cotizar').classList.toggle('hidden',t!=='cotizar');
+ $('#tab-agenda').classList.toggle('hidden',t!=='agenda');
+ $('#bar').style.display=t==='cotizar'?'flex':'none';
+ if(t==='agenda')renderCal();
+}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+
+renderChips();renderItems();
+</script>
+</body>
+</html>
